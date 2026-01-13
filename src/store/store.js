@@ -27,7 +27,7 @@ if (!secretKey) {
 }
 
 const persistConfig = {
-  key: "root-pharmacy",
+  key: "root-south-pole",
   storage,
   whitelist: ["auth", "company", "version", "ui", "permissions", "users"],
   transforms,

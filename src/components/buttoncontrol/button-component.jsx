@@ -1155,6 +1155,8 @@ export const InvoicePackingCreate = forwardRef(
     );
   }
 );
+InvoicePackingCreate.page = "Invoice";
+
 /////// MASTER – InvoicePackingEdit
 export const InvoicePackingEdit = forwardRef(({ onClick, className }, ref) => {
   const userId = useSelector((state) => state.auth.user?.id);

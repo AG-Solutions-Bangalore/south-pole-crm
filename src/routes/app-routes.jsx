@@ -58,6 +58,7 @@ import ExportInvoice from "@/app/invoice/export-invoice";
 import PackingInvoice from "@/app/invoice/packing-invoice";
 import InvoicePackingPage from "@/app/invoice/InvoicePackingPage";
 import ContractExport from "@/app/contract/contaract-view";
+import ItemForm from "@/app/item/item-form";
 
 function AppRoutes() {
   return (
@@ -298,6 +299,22 @@ function AppRoutes() {
             element={
               <Suspense fallback={<LoadingBar />}>
                 <ItemList />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/master/items/create"
+            element={
+              <Suspense fallback={<LoadingBar />}>
+                <ItemForm />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/master/items/edit/:id"
+            element={
+              <Suspense fallback={<LoadingBar />}>
+                <ItemForm />
               </Suspense>
             }
           />

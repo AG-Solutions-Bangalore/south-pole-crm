@@ -24,7 +24,7 @@ export default function LoginForm({
       className="lg:col-span-2 p-8 md:p-12 flex flex-col justify-center bg-background"
     >
       <div className="flex items-center gap-1 p-2 rounded-md mb-8">
-        <img src="" alt="Pharmacy Logo" />
+        <img src="" alt="south-pole Logo" />
       </div>
 
       <motion.div
@@ -35,9 +35,7 @@ export default function LoginForm({
         <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-2">
           Welcome back
         </h1>
-        <p className="text-muted-foreground text-lg mb-10">
-          Continue your certification journey with AIA
-        </p>
+        <p className="text-muted-foreground text-lg mb-10">description </p>
       </motion.div>
 
       <form onSubmit={handleSubmit}>

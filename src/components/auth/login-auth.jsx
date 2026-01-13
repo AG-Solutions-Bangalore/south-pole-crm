@@ -14,38 +14,38 @@ import LoginForm from "./login-form";
 const testimonials = [
   {
     image:
-      "https://img.freepik.com/free-photo/young-hispanic-woman-pharmacist-smiling-confident-standing-with-arms-crossed-gesture-pharmacy_839833-7087.jpg?w=740",
-    title: "Expert Pharmacists",
+      "https://img.freepik.com/free-photo/large-cargo-ship-with-containers-open-sea-logistics-import-export_342744-1325.jpg?w=740",
+    title: "Global Export Expertise",
     description:
-      "Our team of certified pharmacists ensures accurate dispensing and professional healthcare guidance.",
+      "South Pole specializes in international exports, delivering goods efficiently across global markets with proven logistics expertise.",
   },
   {
     image:
-      "https://img.freepik.com/free-photo/warehouse-pharmacy_1161-231.jpg?w=740",
-    title: "Wide Range of Medications",
+      "https://img.freepik.com/free-photo/warehouse-workers-checking-inventory-logistics-center_342744-1340.jpg?w=740",
+    title: "End-to-End Supply Chain",
     description:
-      "We provide an extensive selection of prescription and over-the-counter medicines for all your health needs.",
+      "From sourcing to shipment, we manage the complete export supply chain ensuring accuracy, speed, and reliability.",
   },
   {
     image:
-      "https://img.freepik.com/free-vector/tiny-pharmacist-with-pills-vitamins-flat-vector-illustration-doctors-writing-prescriptions-antibiotics-working-together-helping-patients-cure-pharmacy-business-drugstore-concept_74855-23225.jpg?w=740",
-    title: "Patient Care & Consultation",
+      "https://img.freepik.com/free-photo/businessman-analyzing-export-documents-office_342744-1203.jpg?w=740",
+    title: "Export Documentation & Compliance",
     description:
-      "Personalized advice and care for every patient, ensuring safety, proper dosage, and overall well-being.",
+      "We handle all export documentation, regulatory compliance, and certifications to ensure smooth customs clearance worldwide.",
   },
   {
     image:
-      "https://img.freepik.com/premium-photo/doctor-holding-medicine-capsule-pack-computer-tablet-filling-prescription-pharmacy-drugstore_67340-424.jpg?w=740",
-    title: "Digital Prescription Management",
+      "https://img.freepik.com/free-photo/container-yard-logistics-import-export-business_342744-1333.jpg?w=740",
+    title: "Trusted International Logistics",
     description:
-      "Efficient digital prescription handling ensures accuracy, faster processing, and improved patient safety.",
+      "Our strong network of shipping partners guarantees timely, secure, and cost-effective international deliveries.",
   },
   {
     image:
-      "https://img.freepik.com/premium-photo/clean-organized-pharmacy-interior-with-stocked-shelves_1284935-1894.jpg?w=740",
-    title: "Modern & Organized Pharmacy",
+      "https://img.freepik.com/free-photo/global-business-network-connection-world-map_342744-1258.jpg?w=740",
+    title: "Connecting Markets Worldwide",
     description:
-      "A clean, well-organized pharmacy environment ensuring easy access to medicines and a better customer experience.",
+      "South Pole bridges businesses across borders, helping clients expand globally with confidence and trust.",
   },
 ];
 

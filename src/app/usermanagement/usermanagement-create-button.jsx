@@ -33,7 +33,7 @@ const CreateButton = () => {
   const { buttonPermissions: existingControls } = useSelector(
     (state) => state.permissions
   );
-  console.log(existingControls, "existingControls");
+
   const availablePages = useMemo(() => {
     const existingMap = new Map(
       existingControls.map((c) => [`${c.pages}-${c.button}`, true])
@@ -145,7 +145,7 @@ const CreateButton = () => {
       });
     }
   };
-  console.log(availablePages, "selectedPage");
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="bg-white rounded-xl border shadow-sm p-6 space-y-6">

@@ -24,7 +24,7 @@ export default function LoginForm({
       className="lg:col-span-2 p-8 md:p-12 flex flex-col justify-center bg-background"
     >
       <div className="flex items-center gap-1 p-2 rounded-md mb-8">
-        <img src="" alt="south-pole Logo" />
+        <img src="" alt="South Pole Logo" />
       </div>
 
       <motion.div

@@ -251,12 +251,13 @@ export const PRODUCTDESCRIPTION_API = {
   updateStatus: (id) => `/product-descriptions/${id}/status`,
 };
 export const DUTYDRAWBACK_API = {
-  getlist: "/getDutyDrawback/Pending",
-  getById: (id) => `/getDutyDrawback/Pending/${id}`,
+  getlist: (id) => `/getDutyDrawback/${id}`,
   updateById: (id) => `/updateDutyDrawback/${id}`,
 };
 export const PAYMENT_API = {
   getlist: "/invoice-payment",
+  getPendinglist: "/getInvoicePaymentPending",
+  getCloselist: "/getInvoicePaymentClose",
   create: "/invoice-payment",
   paymentamount: "/getInvoicePaymentAmount",
   status: "/getInvoicePaymentStatus",
@@ -269,4 +270,5 @@ export const REPORT_API = {
   salesreport: "/sales-accounts-report",
   drawbackreport: "/drawback-report",
   stockreport: "/stock-report",
+  monthwisereport: "/purchase-product-monthwise-report",
 };

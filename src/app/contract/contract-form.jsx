@@ -14,6 +14,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Calendar22 } from "@/components/ui/calendar-22";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
@@ -47,18 +48,17 @@ const EMPTY_SUB = {
   id: "",
   contractSub_item_id: "",
   contractSub_qnty: "",
-  contractSub_mrp: "",
   contractSub_selling_rate: "",
   contractSub_item_gst: "",
-  contractSub_batch_no: "",
-  contractSub_manufacture_date: "",
-  contractSub_expire_date: "",
+};
+const EMPTY_SUB_ONE = {
+  id: "",
+  contractTransport_details: "",
+  contractTransport_amount: "",
 };
 
 const INITIAL_STATE = {
   branch_short: "",
-  branch_name: "",
-  branch_address: "",
 
   contract_date: moment().format("YYYY-MM-DD"),
   contract_no: "",
@@ -99,6 +99,7 @@ const INITIAL_STATE = {
   contract_status: "Open",
 
   subs: [{ ...EMPTY_SUB }],
+  subs1: [{ ...EMPTY_SUB_ONE }],
 };
 const REQUIRED_FIELDS = {
   contract_buyer: "Buyer is required",
@@ -133,7 +134,7 @@ const ContractForm = () => {
   const { trigger, loading } = useApiMutation();
   const { trigger: fetchRef, loading: refloading, referror } = useApiMutation();
   const { trigger: fetchData, loading: loadingData, error } = useApiMutation();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState("form");
   const {
     trigger: Deletetrigger,
     loading: loadingdelete,
@@ -147,7 +148,7 @@ const ContractForm = () => {
     "port",
     "paymentterm",
     "product",
-    "purchaseitem",
+    "item",
     "year",
     "country",
     "container",
@@ -210,11 +211,11 @@ const ContractForm = () => {
     refetch: refetchProduct,
   } = master.product;
   const {
-    data: purchaseitemData,
-    loading: loadingPurchaseItem,
-    error: purchaseitemError,
-    refetch: refetchPurchaseItem,
-  } = master.purchaseitem;
+    data: itemData,
+    loading: loadingItem,
+    error: ItemError,
+    refetch: refetchItem,
+  } = master.item;
   const {
     data: yearData,
     loading: loadingYear,
@@ -259,9 +260,6 @@ const ContractForm = () => {
       setFormData({
         ...INITIAL_STATE,
         branch_short: data.branch_short ?? "",
-        branch_name: data.branch_name ?? "",
-        branch_address: data.branch_address ?? "",
-
         contract_date: data.contract_date
           ? moment(data.contract_date).format("YYYY-MM-DD")
           : moment().format("YYYY-MM-DD"),
@@ -311,13 +309,8 @@ const ContractForm = () => {
                 id: s.id ?? "",
                 contractSub_item_id: String(s.contractSub_item_id) ?? "",
                 contractSub_qnty: s.contractSub_qnty ?? "",
-                contractSub_mrp: s.contractSub_mrp ?? "",
                 contractSub_selling_rate: s.contractSub_selling_rate ?? "",
                 contractSub_item_gst: s.contractSub_item_gst ?? "",
-                contractSub_batch_no: s.contractSub_batch_no ?? "",
-                contractSub_manufacture_date:
-                  s.contractSub_manufacture_date ?? "",
-                contractSub_expire_date: s.contractSub_expire_date ?? "",
               }))
             : [{ ...EMPTY_SUB }],
       });
@@ -361,8 +354,6 @@ const ContractForm = () => {
       setFormData((p) => ({
         ...p,
         branch_short: value,
-        branch_name: selectedBranch?.branch_name || "",
-        branch_address: selectedBranch?.branch_address || "",
         contract_loading: selectedBranch?.branch_port_of_loading || "",
         contract_no: "",
         contract_ref: ref,
@@ -575,7 +566,7 @@ const ContractForm = () => {
     subs[index][key] = value;
 
     if (key === "contractSub_item_id") {
-      const selectedItem = purchaseitemData?.data?.find(
+      const selectedItem = itemData?.data?.find(
         (item) => String(item.id) === String(value)
       );
       setAvailableQuantity((prev) => ({
@@ -649,7 +640,7 @@ const ContractForm = () => {
     portError ||
     paymentTermError ||
     productError ||
-    purchaseitemError ||
+    ItemError ||
     referror ||
     yearError ||
     countryError ||
@@ -668,7 +659,7 @@ const ContractForm = () => {
           refetchPort();
           refetchPaymentTerm();
           refetchProduct();
-          refetchPurchaseItem();
+          refetchItem();
           refetchYear();
           refetchcountry();
           refetchcontainer();
@@ -691,7 +682,7 @@ const ContractForm = () => {
     loadingPort ||
     loadingPaymentTerm ||
     loadingProduct ||
-    loadingPurchaseItem ||
+    loadingItem ||
     loadingYear ||
     loadingcountry ||
     loadingcontainer ||
@@ -747,7 +738,7 @@ const ContractForm = () => {
       />
 
       <Card className="p-4 space-y-6">
-        <Tabs
+        {/* <Tabs
           defaultValue="form"
           className="w-full"
           value={step === 1 ? "form" : "items"}
@@ -758,10 +749,12 @@ const ContractForm = () => {
               setStep(1);
             }
           }}
-        >
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="form">Invoice Details</TabsTrigger>
+        > */}
+        <Tabs value={step} onValueChange={setStep} className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="form">Contract Details</TabsTrigger>
             <TabsTrigger value="items">Items</TabsTrigger>
+            <TabsTrigger value="transport">Transport</TabsTrigger>
           </TabsList>
           <TabsContent value="form" className="pt-4">
             <Card className="p-4 space-y-6">
@@ -839,21 +832,8 @@ const ContractForm = () => {
                     }
                   />
 
-                  <div
-                    style={{ textAlign: "center" }}
-                    className="bg-white rounded-md border"
-                  >
-                    <span style={{ fontSize: "12px" }}>
-                      {formData.branch_name}
-                    </span>
-                    <br />
-                    <span style={{ fontSize: "9px", display: "block" }}>
-                      {formData.branch_address}
-                    </span>
-                  </div>
-                  <Field
+                  <Calendar22
                     label="Contract Date *"
-                    type="date"
                     value={formData.contract_date}
                     onChange={(v) => handleChange("contract_date", v)}
                     error={errors.contract_date}
@@ -954,13 +934,12 @@ const ContractForm = () => {
                   optionLabel="containerSize"
                   error={errors.contract_container_size}
                 />
-                <Field
+
+                <Calendar22
                   label="Shipment Date"
-                  type="date"
                   value={formData.contract_ship_date}
                   onChange={(v) => handleChange("contract_ship_date", v)}
                 />
-
                 <SelectField
                   label="GR Code"
                   required
@@ -1121,13 +1100,9 @@ const ContractForm = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[25%]">Item *</TableHead>
-                      <TableHead className="w-[15%]">Qty *</TableHead>
-                      <TableHead className="w-[15%]">Batch </TableHead>
-                      <TableHead className="w-[15%]">Manufacture </TableHead>
-                      <TableHead className="w-[10%]">Expire </TableHead>
-                      <TableHead className="w-[10%]">MRP </TableHead>
-                      <TableHead className="w-[15%]">Selling *</TableHead>
+                      <TableHead>Item *</TableHead>
+                      <TableHead>Quantity *</TableHead>
+                      <TableHead>Selling *</TableHead>
                       <TableHead className="w-[60px] text-center">
                         Action
                       </TableHead>
@@ -1137,7 +1112,6 @@ const ContractForm = () => {
                   <TableBody>
                     {formData.subs.map((row, idx) => (
                       <TableRow key={row.id}>
-                        {/* ITEM */}
                         <TableCell>
                           <SelectField
                             hideLabel
@@ -1145,83 +1119,39 @@ const ContractForm = () => {
                             onChange={(v) =>
                               handleSubChange(idx, "contractSub_item_id", v)
                             }
-                            options={purchaseitemData?.data || []}
+                            options={itemData?.data || []}
                             optionKey="id"
                             optionLabel="item_brand_name"
                             error={errors[`subs.${idx}.contractSub_item_id`]}
                           />
                         </TableCell>
 
-                        {/* QTY */}
                         <TableCell>
-                          <Field
-                            hideLabel
-                            value={row.contractSub_qnty ?? ""}
-                            onChange={(v) =>
-                              handleSubChange(
-                                idx,
-                                "contractSub_qnty",
-                                v.replace(/[^0-9]/g, "")
-                              )
-                            }
-                            error={errors[`subs.${idx}.contractSub_qnty`]}
-                          />
-                          {!isEdit && (
-                            <span className="font-medium text-[11px]">
-                              Available Quantity:{" "}
-                              <span>{availableQuantity[idx] ?? 0}</span>
-                            </span>
-                          )}
+                          <div className="flex flex-col gap-1 mt-6">
+                            <Field
+                              hideLabel
+                              value={row.contractSub_qnty ?? ""}
+                              onChange={(v) =>
+                                handleSubChange(
+                                  idx,
+                                  "contractSub_qnty",
+                                  v.replace(/[^0-9]/g, "")
+                                )
+                              }
+                              error={errors[`subs.${idx}.contractSub_qnty`]}
+                            />
+
+                            <div className="min-h-[14px] text-[11px] font-medium">
+                              {!isEdit && (
+                                <>
+                                  Available Quantity:{" "}
+                                  <span>{availableQuantity[idx] ?? 0}</span>
+                                </>
+                              )}
+                            </div>
+                          </div>
                         </TableCell>
 
-                        <TableCell>
-                          <Field
-                            hideLabel
-                            value={row.contractSub_batch_no ?? ""}
-                            onChange={(v) =>
-                              handleSubChange(idx, "contractSub_batch_no", v)
-                            }
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Field
-                            hideLabel
-                            type="date"
-                            value={row.contractSub_manufacture_date ?? ""}
-                            onChange={(v) =>
-                              handleSubChange(
-                                idx,
-                                "contractSub_manufacture_date",
-                                v
-                              )
-                            }
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Field
-                            hideLabel
-                            type="date"
-                            value={row.contractSub_expire_date ?? ""}
-                            onChange={(v) =>
-                              handleSubChange(idx, "contractSub_expire_date", v)
-                            }
-                          />
-                        </TableCell>
-                        {/* MRP */}
-                        <TableCell>
-                          <Field
-                            hideLabel
-                            value={row.contractSub_mrp ?? ""}
-                            onChange={(v) =>
-                              handleSubChange(
-                                idx,
-                                "contractSub_mrp",
-                                v.replace(/[^0-9.]/g, "")
-                              )
-                            }
-                          />
-                        </TableCell>
-                        {/* MRP */}
                         <TableCell>
                           <Field
                             hideLabel
@@ -1238,6 +1168,97 @@ const ContractForm = () => {
                             }
                           />
                         </TableCell>
+                        <TableCell className="text-center">
+                          {formData.subs.length > 1 && (
+                            <Button
+                              size="icon"
+                              variant={row.id ? "destructive" : "secondary"}
+                              onClick={() => {
+                                if (row.id) {
+                                  setSubToDelete({ index: idx, id: row.id });
+                                  setDeleteConfirmOpen(true);
+                                } else {
+                                  removeSub(idx);
+                                }
+                              }}
+                            >
+                              {row.id ? <Trash2 size={16} /> : <X size={14} />}
+                            </Button>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Card>
+
+              <Button
+                variant="outline"
+                className="mt-4"
+                onClick={addSub}
+                type="button"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Add Item
+              </Button>
+            </>
+          </TabsContent>
+          <TabsContent value="transport" className="pt-4">
+            <>
+              <Card className="p-0 overflow-hidden rounded-sm">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Transport Details *</TableHead>
+                      <TableHead>Transport Amount *</TableHead>
+                      <TableHead className="w-[60px] text-center">
+                        Action
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+
+                  <TableBody>
+                    {formData.subs1.map((row, idx) => (
+                      <TableRow key={row.id}>
+                        <TableCell>
+                          <SelectField
+                            hideLabel
+                            value={row.contractTransport_details}
+                            onChange={(v) =>
+                              handleSubChange(
+                                idx,
+                                "contractTransport_details",
+                                v
+                              )
+                            }
+                            options={itemData?.data || []}
+                            optionKey="id"
+                            optionLabel="item_brand_name"
+                            error={
+                              errors[`subs.${idx}.contractTransport_details`]
+                            }
+                          />
+                        </TableCell>
+
+                        <TableCell>
+                          <div className="flex flex-col gap-1">
+                            <Field
+                              hideLabel
+                              value={row.contractTransport_amount ?? ""}
+                              onChange={(v) =>
+                                handleSubChange(
+                                  idx,
+                                  "contractTransport_amount",
+                                  v.replace(/[^0-9]/g, "")
+                                )
+                              }
+                              error={
+                                errors[`subs.${idx}.contractTransport_amount`]
+                              }
+                            />
+                          </div>
+                        </TableCell>
+
                         <TableCell className="text-center">
                           {formData.subs.length > 1 && (
                             <Button

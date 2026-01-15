@@ -59,6 +59,7 @@ const INITIAL_STATE = {
   invoiceP_date: "",
   invoiceP_v_date: "",
   branch_short: "",
+  branch_name: "",
   invoiceP_usd_amount: "",
   invoiceP_dollar_rate: "",
   invoiceP_irtt_no: "",
@@ -66,9 +67,7 @@ const INITIAL_STATE = {
   subs: [{ ...EMPTY_SUB }],
 };
 
-/* ================= COMPONENT ================= */
-
-const InvoicePaymentForm = () => {
+const PaymentForm = () => {
   const { id } = useParams();
   const isEdit = Boolean(id);
   const navigate = useNavigate();
@@ -76,7 +75,6 @@ const InvoicePaymentForm = () => {
 
   const [formData, setFormData] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
-
   const { trigger, loading } = useApiMutation();
   const {
     trigger: fetchPayment,
@@ -128,7 +126,6 @@ const InvoicePaymentForm = () => {
     setFormData((prev) => {
       const subs = [...prev.subs];
 
-      // numeric validation
       if (
         [
           "invoicePSub_amt_adv",
@@ -166,11 +163,14 @@ const InvoicePaymentForm = () => {
     const e = {};
 
     if (!formData.invoiceP_date) e.invoiceP_date = "Required";
-    if (!formData.branch_short) e.branch_short = "Required";
-    if (!formData.invoiceP_v_date) e.invoiceP_v_date = "Required";
-    if (!formData.invoiceP_usd_amount) e.invoiceP_usd_amount = "Required";
-    if (!formData.invoiceP_dollar_rate) e.invoiceP_dollar_rate = "Required";
-    if (!formData.invoiceP_status) e.invoiceP_status = "Required";
+    if (!formData.branch_short) e.branch_short = "Branch Short Required";
+    if (!formData.branch_name) e.branch_name = "Branch Name Required";
+    if (!formData.invoiceP_v_date) e.invoiceP_v_date = "Invoice Date Required";
+    if (!formData.invoiceP_usd_amount)
+      e.invoiceP_usd_amount = "USD Amount Required";
+    if (!formData.invoiceP_dollar_rate)
+      e.invoiceP_dollar_rate = "Dollor Rate Required";
+    if (!formData.invoiceP_status) e.invoiceP_status = "Status Required";
 
     const totalInvoiceSubAmount = formData.subs.reduce(
       (sum, item) =>
@@ -196,6 +196,7 @@ const InvoicePaymentForm = () => {
     invoiceP_date: formData.invoiceP_date,
     invoiceP_v_date: formData.invoiceP_v_date,
     branch_short: formData.branch_short,
+    branch_name: formData.branch_name,
     invoiceP_usd_amount: Number(formData.invoiceP_usd_amount),
     invoiceP_dollar_rate: Number(formData.invoiceP_dollar_rate),
     invoiceP_irtt_no: formData.invoiceP_irtt_no,
@@ -215,8 +216,10 @@ const InvoicePaymentForm = () => {
   });
 
   const handleSubmit = async () => {
-    if (!validate()) return;
-
+    if (!validate()) {
+      toast.error("Please fix the errors before submitting");
+      return;
+    }
     try {
       const res = await trigger({
         url: isEdit ? PAYMENT_API.updateById(id) : PAYMENT_API.create,
@@ -226,8 +229,8 @@ const InvoicePaymentForm = () => {
 
       if (res.code === 201) {
         toast.success("Payment saved successfully");
-        navigate("/invoice-payment");
-        queryClient.invalidateQueries(["invoice-payment-list"]);
+        navigate("/payment");
+        queryClient.invalidateQueries(["payment-list"]);
       } else {
         toast.error(res.message || "Something went wrong");
       }
@@ -245,8 +248,8 @@ const InvoicePaymentForm = () => {
 
       <PageHeader
         icon={User}
-        title={isEdit ? "Edit Invoice Payment" : "Create Invoice Payment"}
-        description="Manage invoice payment details and information."
+        title={isEdit ? "Edit  Payment" : "Create  Payment"}
+        description="Manage  payment details and information."
         rightContent={
           <div className="flex gap-2">
             <Button onClick={handleSubmit} disabled={loading}>
@@ -269,7 +272,6 @@ const InvoicePaymentForm = () => {
       />
 
       <Card className="p-4 space-y-6">
-        {/* ================= HEADER FIELDS ================= */}
         <div className="grid grid-cols-4 gap-4">
           <Calendar22
             label="Payment Date *"
@@ -286,6 +288,7 @@ const InvoicePaymentForm = () => {
             optionKey="branch_short"
             optionLabel="branch_short"
             error={errors.branch_short}
+            disabled={isEdit}
           />
 
           <Calendar22
@@ -431,4 +434,4 @@ const InvoicePaymentForm = () => {
   );
 };
 
-export default InvoicePaymentForm;
+export default PaymentForm;

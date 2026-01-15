@@ -1,17 +1,36 @@
-item_hsn_code
-item_brand_name
-item_name
-item_barcode
-item_net_weight
-item_gst
-item_pack_per_case
-item_pack_type --Pieces / Kgs
-item_order_uom --CS / Bag
-item_carton_id --cartonbox api
-item_inKgs --Yes / No
-item_kg_rate
-item_piece_rate
-item_packing_charges
-item_packing_material
-item_pouch
-item_tare_weight
+branch_short
+contract_date
+contract_no
+contract_ref
+contract_pono
+contract_buyer_id
+contract_buyer
+contract_buyer_add
+contract_consignee_id
+contract_consignee
+contract_consignee_add
+contract_container_size
+contract_product
+contract_product_cust_des
+contract_gr_code
+contract_lut_code
+contract_vessel_flight_no
+contract_loading
+contract_prereceipts
+contract_precarriage
+contract_destination_port
+contract_discharge
+contract_cif
+contract_destination_country
+contract_freight_charges
+contract_dollar_rate
+contract_shipment
+contract_ship_date
+contract_specification1
+contract_specification2
+contract_payment_terms
+contract_remarks
+subs[contractSub_item_id,contractSub_qnty,contractSub_selling_rate]
+contractSub_item_gst is from backend pass a data which in item api
+
+subs1[contractTransport_details,contractTransport_amount]

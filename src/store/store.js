@@ -27,7 +27,7 @@ if (!secretKey) {
 }
 
 const persistConfig = {
-  key: "root-south-pole",
+  key: "root-southpole",
   storage,
   whitelist: ["auth", "company", "version", "ui", "permissions", "users"],
   transforms,

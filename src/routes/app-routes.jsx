@@ -49,8 +49,8 @@ import CartonBoxList from "@/app/cartoonbox/cartoonbox-list";
 import InvoicePackingForm from "@/app/invoice/invoice-packing";
 import ProductDescriptionList from "@/app/productdescription/product-description-list";
 import DutyDrawbackList from "@/app/dutydrawback/dutydrawback-list";
-import InvoicePaymentList from "@/app/invoicepayment/invoicepayment-list";
-import InvoicePaymentForm from "@/app/invoicepayment/invoice-payment-form";
+import PaymentList from "@/app/payment/payment-list";
+import PaymentForm from "@/app/payment/payment-form";
 import SalesAccountsReport from "@/app/report/salesreport/salesreport";
 import DutyDrawbackReport from "@/app/report/dutydrawbackreport/dutydrawbackreport";
 import StockReport from "@/app/report/stockreport/stcokreport";
@@ -58,6 +58,9 @@ import ExportInvoice from "@/app/invoice/export-invoice";
 import PackingInvoice from "@/app/invoice/packing-invoice";
 import InvoicePackingPage from "@/app/invoice/InvoicePackingPage";
 import ContractExport from "@/app/contract/contaract-view";
+import MonthWiseReport from "@/app/report/monthwisereport/monthwisereport";
+import PaymentPending from "@/app/payment/payment-pending";
+import PaymentClose from "@/app/payment/payment-close";
 import ItemForm from "@/app/item/item-form";
 
 function AppRoutes() {
@@ -488,26 +491,42 @@ function AppRoutes() {
             }
           />
           <Route
-            path="/invoice-payment"
+            path="/payment"
             element={
               <Suspense fallback={<LoadingBar />}>
-                <InvoicePaymentList />
+                <PaymentList />
               </Suspense>
             }
           />
           <Route
-            path="/invoice-payment/create"
+            path="/pending-payment"
             element={
               <Suspense fallback={<LoadingBar />}>
-                <InvoicePaymentForm />
+                <PaymentPending />
               </Suspense>
             }
           />
           <Route
-            path="/invoice-payment/edit/:id"
+            path="/close-payment"
             element={
               <Suspense fallback={<LoadingBar />}>
-                <InvoicePaymentForm />
+                <PaymentClose />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/payment/create"
+            element={
+              <Suspense fallback={<LoadingBar />}>
+                <PaymentForm />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/payment/edit/:id"
+            element={
+              <Suspense fallback={<LoadingBar />}>
+                <PaymentForm />
               </Suspense>
             }
           />
@@ -532,6 +551,14 @@ function AppRoutes() {
             element={
               <Suspense fallback={<LoadingBar />}>
                 <StockReport />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/report/monthwise"
+            element={
+              <Suspense fallback={<LoadingBar />}>
+                <MonthWiseReport />
               </Suspense>
             }
           />

@@ -40,6 +40,7 @@ const INITIAL_STATE = {
   item_packing_material: "",
   item_pouch: "",
   item_tare_weight: "",
+  item_mrp: "",
   item_status: "Active",
 };
 
@@ -81,6 +82,7 @@ const ItemForm = React.memo(function ItemForm() {
         item_packing_material: res?.data?.item_packing_material || "",
         item_pouch: res?.data?.item_pouch || "",
         item_tare_weight: res?.data?.item_tare_weight || "",
+        item_mrp: res?.data?.item_mrp || "",
         item_status: res?.data?.item_status || "Active",
       });
     } catch (err) {
@@ -342,6 +344,12 @@ const ItemForm = React.memo(function ItemForm() {
             value={formData.item_tare_weight}
             onChange={(v) => handleNumberChange("item_tare_weight", v)}
             error={errors.item_tare_weight}
+          />
+          <Field
+            label="MRP"
+            placeholder="Enter Mrp"
+            value={formData.item_mrp}
+            onChange={(v) => handleNumberChange("item_mrp", v)}
           />
           {isEdit && (
             <div className="col-span-1">

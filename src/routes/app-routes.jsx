@@ -35,32 +35,23 @@ import AuthRoute from "./auth-route";
 import ProtectedRoute from "./protected-route";
 import BranchForm from "@/app/branch/branch-form";
 import ItemList from "@/app/item/item-list";
-import PrecarriageList from "@/app/precarriages/precarriages-list";
 import VendorForm from "@/app/vendor/vendor-form";
 import VendorList from "@/app/vendor/vendor-list";
-import PurchaseList from "@/app/purchase/purchase-list";
 import PurchaseForm from "@/app/purchase/purchase-form";
 import ContractList from "@/app/contract/contract-list";
 import ContractForm from "@/app/contract/contract-form";
 import InvoiceList from "@/app/invoice/invoice-list";
 import InvoiceForm from "@/app/invoice/invoice-form";
 import InvoiceDocumentForm from "@/app/invoice/invoice-document";
-import CartonBoxList from "@/app/cartoonbox/cartoonbox-list";
 import InvoicePackingForm from "@/app/invoice/invoice-packing";
 import ProductDescriptionList from "@/app/productdescription/product-description-list";
-import DutyDrawbackList from "@/app/dutydrawback/dutydrawback-list";
-import PaymentList from "@/app/payment/payment-list";
-import PaymentForm from "@/app/payment/payment-form";
 import SalesAccountsReport from "@/app/report/salesreport/salesreport";
 import DutyDrawbackReport from "@/app/report/dutydrawbackreport/dutydrawbackreport";
 import StockReport from "@/app/report/stockreport/stcokreport";
-import ExportInvoice from "@/app/invoice/export-invoice";
 import PackingInvoice from "@/app/invoice/packing-invoice";
 import InvoicePackingPage from "@/app/invoice/InvoicePackingPage";
 import ContractExport from "@/app/contract/contaract-view";
 import MonthWiseReport from "@/app/report/monthwisereport/monthwisereport";
-import PaymentPending from "@/app/payment/payment-pending";
-import PaymentClose from "@/app/payment/payment-close";
 import ItemForm from "@/app/item/item-form";
 import CostingView from "@/app/contract/costing-view";
 
@@ -330,14 +321,7 @@ function AppRoutes() {
               </Suspense>
             }
           />
-          <Route
-            path="/master/cartonbox"
-            element={
-              <Suspense fallback={<LoadingBar />}>
-                <CartonBoxList />
-              </Suspense>
-            }
-          />
+         
           <Route
             path="/master/vendor"
             element={
@@ -363,14 +347,7 @@ function AppRoutes() {
             }
           />
 
-          <Route
-            path="/purchase"
-            element={
-              <Suspense fallback={<LoadingBar />}>
-                <PurchaseList />
-              </Suspense>
-            }
-          />
+
           <Route
             path="/purchase/create"
             element={
@@ -488,54 +465,6 @@ function AppRoutes() {
             element={
               <Suspense fallback={<LoadingBar />}>
                 <ProductDescriptionList />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/master/dutydrawback"
-            element={
-              <Suspense fallback={<LoadingBar />}>
-                <DutyDrawbackList />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/payment"
-            element={
-              <Suspense fallback={<LoadingBar />}>
-                <PaymentList />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/pending-payment"
-            element={
-              <Suspense fallback={<LoadingBar />}>
-                <PaymentPending />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/close-payment"
-            element={
-              <Suspense fallback={<LoadingBar />}>
-                <PaymentClose />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/payment/create"
-            element={
-              <Suspense fallback={<LoadingBar />}>
-                <PaymentForm />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/payment/edit/:id"
-            element={
-              <Suspense fallback={<LoadingBar />}>
-                <PaymentForm />
               </Suspense>
             }
           />

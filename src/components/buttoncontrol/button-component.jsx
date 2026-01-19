@@ -939,52 +939,7 @@ export const VendorEdit = forwardRef(({ onClick, className }, ref) => {
 });
 
 VendorEdit.page = "Vendor";
-/////// MASTER – PurchaseCreate
-export const PurchaseCreate = forwardRef(({ onClick, className }, ref) => {
-  const userId = useSelector((state) => state.auth.user?.id);
-  const buttonPermissions = useSelector(
-    (state) => state.permissions.buttonPermissions
-  );
 
-  if (!checkPermission(String(userId), "PurchaseCreate", buttonPermissions)) {
-    return null;
-  }
-
-  return (
-    <Button ref={ref} variant="default" className={className} onClick={onClick}>
-      <SquarePlus className="h-4 w-4 mr-2" />
-      Purchase
-    </Button>
-  );
-});
-
-PurchaseCreate.page = "Purchase";
-
-/////// MASTER – Vendor
-export const PurchaseEdit = forwardRef(({ onClick, className }, ref) => {
-  const userId = useSelector((state) => state.auth.user?.id);
-  const buttonPermissions = useSelector(
-    (state) => state.permissions.buttonPermissions
-  );
-
-  if (!checkPermission(String(userId), "PurchaseEdit", buttonPermissions)) {
-    return null;
-  }
-
-  return (
-    <Button
-      ref={ref}
-      onClick={onClick}
-      className={className}
-      variant="ghost"
-      size="icon"
-    >
-      <Edit className="h-4 w-4 text-black" />
-    </Button>
-  );
-});
-
-PurchaseEdit.page = "Purchase";
 /////// MASTER – ContractCreate
 export const ContractCreate = forwardRef(({ onClick, className }, ref) => {
   const userId = useSelector((state) => state.auth.user?.id);
@@ -1269,52 +1224,7 @@ export const InvoicePacking = forwardRef(({ onClick, className }, ref) => {
 });
 
 InvoicePacking.page = "Invoice";
-/////// MASTER – CartonBox
-export const CartonBoxCreate = forwardRef(({ onClick, className }, ref) => {
-  const userId = useSelector((state) => state.auth.user?.id);
-  const buttonPermissions = useSelector(
-    (state) => state.permissions.buttonPermissions
-  );
 
-  if (!checkPermission(String(userId), "CartonBoxCreate", buttonPermissions)) {
-    return null;
-  }
-
-  return (
-    <Button ref={ref} variant="default" className={className} onClick={onClick}>
-      <SquarePlus className="h-4 w-4 mr-2" />
-      CartonBox
-    </Button>
-  );
-});
-
-CartonBoxCreate.page = "CartonBox";
-
-/////// MASTER – CartonBoxEdit
-export const CartonBoxEdit = forwardRef(({ onClick, className }, ref) => {
-  const userId = useSelector((state) => state.auth.user?.id);
-  const buttonPermissions = useSelector(
-    (state) => state.permissions.buttonPermissions
-  );
-
-  if (!checkPermission(String(userId), "CartonBoxEdit", buttonPermissions)) {
-    return null;
-  }
-
-  return (
-    <Button
-      ref={ref}
-      onClick={onClick}
-      className={className}
-      variant="ghost"
-      size="icon"
-    >
-      <Edit className="h-4 w-4 text-black" />
-    </Button>
-  );
-});
-
-CartonBoxEdit.page = "CartonBox";
 /////// MASTER – ProductDescription
 export const ProductDescriptionCreate = forwardRef(
   ({ onClick, className }, ref) => {
@@ -1382,77 +1292,7 @@ export const ProductDescriptionEdit = forwardRef(
 );
 
 ProductDescriptionEdit.page = "Product Description";
-/////// MASTER –Payment
-export const PaymentCreate = forwardRef(({ onClick, className }, ref) => {
-  const userId = useSelector((state) => state.auth.user?.id);
-  const buttonPermissions = useSelector(
-    (state) => state.permissions.buttonPermissions
-  );
 
-  if (!checkPermission(String(userId), "PaymentCreate", buttonPermissions)) {
-    return null;
-  }
-
-  return (
-    <Button ref={ref} variant="default" className={className} onClick={onClick}>
-      <SquarePlus className="h-4 w-4 mr-2" />
-      Payment
-    </Button>
-  );
-});
-
-PaymentCreate.page = "Payment List";
-
-/////// MASTER – PaymentEdit
-export const PaymentEdit = forwardRef(({ onClick, className }, ref) => {
-  const userId = useSelector((state) => state.auth.user?.id);
-  const buttonPermissions = useSelector(
-    (state) => state.permissions.buttonPermissions
-  );
-
-  if (!checkPermission(String(userId), "PaymentEdit", buttonPermissions)) {
-    return null;
-  }
-
-  return (
-    <Button
-      ref={ref}
-      onClick={onClick}
-      className={className}
-      variant="ghost"
-      size="icon"
-    >
-      <Edit className="h-4 w-4 text-black" />
-    </Button>
-  );
-});
-
-PaymentEdit.page = "Payment List";
-/////// MASTER – DutyDrawbackEdit
-export const DutyDrawbackEdit = forwardRef(({ onClick, className }, ref) => {
-  const userId = useSelector((state) => state.auth.user?.id);
-  const buttonPermissions = useSelector(
-    (state) => state.permissions.buttonPermissions
-  );
-
-  if (!checkPermission(String(userId), "DutyDrawbackEdit", buttonPermissions)) {
-    return null;
-  }
-
-  return (
-    <Button
-      ref={ref}
-      onClick={onClick}
-      className={className}
-      variant="ghost"
-      size="icon"
-    >
-      <Edit className="h-4 w-4 text-black" />
-    </Button>
-  );
-});
-
-DutyDrawbackEdit.page = "Duty Drawback";
 export default {
   BuyerCreate,
   EditBuyer,
@@ -1494,8 +1334,6 @@ export default {
   PrecarriageEdit,
   VendorCreate,
   VendorEdit,
-  PurchaseCreate,
-  PurchaseEdit,
   ContractCreate,
   ContractEdit,
   CostSheetView,
@@ -1507,11 +1345,6 @@ export default {
   InvoicePackingEdit,
   InvoiceExport,
   InvoicePacking,
-  CartonBoxCreate,
-  CartonBoxEdit,
   ProductDescriptionCreate,
   ProductDescriptionEdit,
-  PaymentCreate,
-  PaymentEdit,
-  DutyDrawbackEdit,
 };

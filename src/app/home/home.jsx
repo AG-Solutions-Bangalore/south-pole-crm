@@ -181,9 +181,8 @@ const Home = () => {
         />
       </div>
 
-      <div className="mt-6">
+      {/* <div className="mt-6 overflow-hidden">
         <Tabs defaultValue="sales" className="w-full">
-          {/* Tabs Header */}
           <TabsList className="bg-white border border-slate-200 rounded-lg">
             <TabsTrigger value="sales" className="gap-2">
               <BarChart3 className="h-4 w-4" />
@@ -195,7 +194,6 @@ const Home = () => {
             </TabsTrigger>
           </TabsList>
 
-          {/* Sales Analytics Tab */}
           <TabsContent value="sales">
             <AnimatePresence mode="wait">
               <motion.div
@@ -211,7 +209,6 @@ const Home = () => {
             </AnimatePresence>
           </TabsContent>
 
-          {/* Balance Distribution Tab */}
           <TabsContent value="balance">
             <AnimatePresence mode="wait">
               <motion.div
@@ -229,7 +226,7 @@ const Home = () => {
             </AnimatePresence>
           </TabsContent>
         </Tabs>
-      </div>
+      </div> */}
     </div>
   );
 };

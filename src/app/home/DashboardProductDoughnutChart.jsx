@@ -53,7 +53,7 @@ const DashboardProductDoughnutChart = ({ data = [] }) => {
   };
 
   return (
-    <Card className="bg-white/80 backdrop-blur border border-slate-200 shadow-sm rounded-xl">
+    <Card className="bg-white/80 backdrop-blur border border-slate-200 shadow-sm rounded-xl max-w-[100%]">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm font-semibold text-slate-700">
           Sales by Product

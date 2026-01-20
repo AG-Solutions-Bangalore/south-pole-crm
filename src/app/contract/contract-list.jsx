@@ -29,7 +29,7 @@ const ContractList = () => {
       per_page: pageSize,
       ...(debouncedSearch?.trim() && { search: debouncedSearch.trim() }),
     }),
-    [pageIndex, pageSize, debouncedSearch]
+    [pageIndex, pageSize, debouncedSearch],
   );
 
   const { data, isLoading, isError, refetch } = useGetApiMutation({
@@ -76,9 +76,9 @@ const ContractList = () => {
           <CostSheetView
             onClick={() => navigate(`/costing/view/${row.original.id}`)}
           />
-          {/* <ContractExport
+          <ContractExport
             onClick={() => navigate(`/contract/view/${row.original.id}`)}
-          /> */}
+          />
         </>
       ),
     },

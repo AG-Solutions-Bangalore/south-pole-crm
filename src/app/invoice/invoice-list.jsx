@@ -35,7 +35,7 @@ const InvoiceList = () => {
       per_page: pageSize,
       ...(debouncedSearch?.trim() && { search: debouncedSearch.trim() }),
     }),
-    [pageIndex, pageSize, debouncedSearch]
+    [pageIndex, pageSize, debouncedSearch],
   );
 
   const {
@@ -85,9 +85,9 @@ const InvoiceList = () => {
           <InvoiceEdit
             onClick={() => navigate(`/invoice/edit/${row.original.id}`)}
           />
-          {/* <InvoiceDocument
+          <InvoiceDocument
             onClick={() => navigate(`/invoicedocument/edit/${row.original.id}`)}
-          /> */}
+          />
           {/* <InvoicePackingCreate
             onClick={() => navigate(`/invoicepacking/${row.original.id}`)}
           /> */}

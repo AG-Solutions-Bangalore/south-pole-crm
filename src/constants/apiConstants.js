@@ -28,6 +28,9 @@ export const USERMANAGEMENT = {
   pageControl: "/panel-fetch-usercontrol-new",
   buttonControl: "/panel-fetch-usercontrol",
 };
+export const DASHBOARD = {
+  list: "/dashboard",
+};
 export const TEAM_API = {
   list: "/panel-fetch-team-list",
   create: "/panel-create-usercontrol-new",

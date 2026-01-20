@@ -4,6 +4,7 @@ import {
   ContractCreate,
   ContractEdit,
   ContractExport,
+  CostSheetView,
 } from "@/components/buttoncontrol/button-component";
 import DataTable from "@/components/common/data-table";
 import ToggleStatus from "@/components/common/status-toggle";
@@ -28,7 +29,7 @@ const ContractList = () => {
       per_page: pageSize,
       ...(debouncedSearch?.trim() && { search: debouncedSearch.trim() }),
     }),
-    [pageIndex, pageSize, debouncedSearch]
+    [pageIndex, pageSize, debouncedSearch],
   );
 
   const { data, isLoading, isError, refetch } = useGetApiMutation({
@@ -71,6 +72,9 @@ const ContractList = () => {
         <>
           <ContractEdit
             onClick={() => navigate(`/contract/edit/${row.original.id}`)}
+          />
+          <CostSheetView
+            onClick={() => navigate(`/costing/view/${row.original.id}`)}
           />
           <ContractExport
             onClick={() => navigate(`/contract/view/${row.original.id}`)}

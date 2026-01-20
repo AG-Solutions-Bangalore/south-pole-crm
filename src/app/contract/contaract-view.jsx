@@ -66,9 +66,6 @@ const ContractExport = () => {
     return total + qty * rate;
   }, 0);
 
-  const totalFOB = grandTotalValue;
-  const totalFreight = Number(contractData?.contract_freight_charges || 0);
-  const totalCNF = totalFOB + totalFreight;
   if (error) return <ApiErrorPage />;
   return (
     <div className="relative">
@@ -96,31 +93,42 @@ const ContractExport = () => {
                   <div className="col-span-6 border-r border-black">
                     <div className="p-2">
                       <p className="font-bold text-[13px]">
-                        {contractData?.branch_name}
+                        {contractData.branch_name}
                       </p>
 
                       <div className="mt-1">
-                        <span className="font-semibold">CORP OFF:</span>{" "}
                         {branchData?.branch_crop_address || ""}
                       </div>
+                      <div>{branchData?.branch_address || ""}</div>
                       <div>
-                        <span className="font-semibold">REG OFF:</span>{" "}
-                        {branchData?.branch_address || ""}
-                      </div>
-                      <div>
-                        <span className="font-semibold">EMAIL:</span>{" "}
-                        {branchData?.branch_email_id || ""}
-                      </div>
-                      <div>
+                        <span className="font-semibold">GSTIN:</span>{" "}
+                        {branchData?.branch_gst || ""}{" "}
                         <span className="font-semibold">IEC:</span>{" "}
                         {branchData?.branch_iec || ""}
                       </div>
+
+                      <div>
+                        <span className="font-semibold">Mobile:</span>{" "}
+                        {branchData?.branch_mobile_no || ""}
+                      </div>
+                      <div>
+                        <span className="font-semibold">Email:</span>{" "}
+                        {branchData?.branch_email_id || ""}
+                      </div>
                     </div>
 
-                    <div className="border-t border-black">
-                      <div className="p-2">
+                    <div className="border-t border-black grid grid-cols-2 gap-2 min-h-40">
+                      <div className="p-2 border-r border-black h-full">
+                        <p className="font-bold">Buyer:</p>
+                        <p className="font-bold">
+                          {contractData.contract_buyer}
+                        </p>
+                        <div className="mt-1">
+                          {contractData.contract_buyer_add}
+                        </div>
+                      </div>
+                      <div className="px-1 py-2">
                         <p className="font-bold">Consignee:</p>
-                        <p className="font-bold">TO ORDER OF:</p>
                         <p className="font-bold">
                           {contractData.contract_consignee}
                         </p>
@@ -150,7 +158,7 @@ const ContractExport = () => {
                       <div className="px-2 py-0.5 min-h-[22px]">
                         {contractData?.contract_date
                           ? moment(contractData.contract_date).format(
-                              "DD-MM-YYYY"
+                              "DD-MM-YYYY",
                             )
                           : "\u00A0"}
                       </div>
@@ -223,7 +231,7 @@ const ContractExport = () => {
                       </div>
                     </div>
 
-                    <div className="px-2 py-2 min-h-[36px]">
+                    <div className="px-2 py-1 min-h-[36px]">
                       <p className="font-bold">Terms of Delivery and Payment</p>
                       <p>{safe(contractData?.contract_payment_terms)}</p>
                     </div>
@@ -236,39 +244,28 @@ const ContractExport = () => {
                       <tr className="border-b border-black text-[12px]">
                         <th
                           className="border-r border-black text-center text-[11px]"
-                          style={{ width: "20%" }}
+                          style={{ width: "60%" }}
                         >
-                          Brand Name
+                          Item Description
                         </th>
-                        <th
-                          className="border-r border-black text-center text-[11px]"
-                          style={{ width: "30%" }}
-                        >
-                          Generic Name
-                        </th>
+
                         <th
                           className="border-r border-black  text-center text-[11px]"
-                          style={{ width: "15%" }}
+                          style={{ width: "10%" }}
                         >
-                          Company Name
+                          Quantity
                         </th>
                         <th
                           className="border-r border-black  text-center text-[11px]"
                           style={{ width: "10%" }}
                         >
-                          Qt
-                        </th>
-                        <th
-                          className="border-r border-black  text-center text-[11px]"
-                          style={{ width: "10%" }}
-                        >
-                          Rate (USD)
+                          Rate
                         </th>
                         <th
                           className="text-center text-[11px]"
                           style={{ width: "10%" }}
                         >
-                          Value (USD)
+                          Amount{" "}
                         </th>
                       </tr>
                     </thead>
@@ -279,25 +276,16 @@ const ContractExport = () => {
                           <Fragment key={groupIndex}>
                             <tr className="border-t border-black text-[11px]">
                               <td className="border-r border-black px-2">
-                                <p className="font-bold text-[10px]">
-                                  {items.item_brand_name}
+                                <p className="text-[10px]">
+                                  {items.contractSub_item_name}
                                 </p>
                               </td>
 
-                              <td className="border-r border-black px-2  text-[10px]">
-                                {items.item_generic_name}
-                              </td>
-
-                              <td className="border-r border-black px-2  text-center text-[10px]">
-                                {items.item_company_name}
-                              </td>
-
-                              {/* Empty columns */}
                               <td className="border-r border-black  text-center">
                                 {" "}
-                                {items.contractSub_qnty}
+                                {Number(items.contractSub_qnty || 0).toFixed(0)}
                               </td>
-                              <td className="border-r border-black  text-center">
+                              <td className="border-r border-black  text-right px-2">
                                 {" "}
                                 {items.contractSub_selling_rate}
                               </td>
@@ -315,54 +303,17 @@ const ContractExport = () => {
                     </tbody>
                     <tfoot>
                       <tr className="border-y border-black text-[12px]">
-                        <td className=" px-2  text-right"></td>
-                        <td className=" px-2  text-right"></td>
-                        <td className="border-r border-black px-2 text-right"></td>
-
-                        <td className="border-r border-black px-2  text-center">
+                        <td className="border-r border-black text-center font-bold">
+                          Total:
+                        </td>
+                        <td className="border-r border-black px-2  text-center font-bold">
                           {grandTotalQty}
                         </td>
 
-                        <td className="border-r border-black"></td>
+                        <td className="border-r border-black text-center"></td>
 
-                        <td className="px-2  text-right">
+                        <td className="px-2  text-right font-bold">
                           {grandTotalValue.toFixed(2)}
-                        </td>
-                      </tr>
-
-                      <tr className="border-y border-black text-[11px]">
-                        <td
-                          colSpan={5}
-                          className="border-r border-black px-2  text-center"
-                        >
-                          TOTAL FOB IN US$
-                        </td>
-                        <td className="px-2 text-right">
-                          {totalFOB.toFixed(2)}
-                        </td>
-                      </tr>
-
-                      <tr className="border-y border-black text-[11px]">
-                        <td
-                          colSpan={5}
-                          className="border-r border-black px-2  text-center"
-                        >
-                          TOTAL FREIGHT IN US $
-                        </td>
-                        <td className="px-2  text-right">
-                          {totalFreight.toFixed(2)}
-                        </td>
-                      </tr>
-
-                      <tr className="text-[12px]">
-                        <td
-                          colSpan={5}
-                          className="border-r border-black px-2 text-center"
-                        >
-                          TOTAL C&amp;F IN US$
-                        </td>
-                        <td className="px-2 text-right">
-                          {totalCNF.toFixed(2)}
                         </td>
                       </tr>
                     </tfoot>

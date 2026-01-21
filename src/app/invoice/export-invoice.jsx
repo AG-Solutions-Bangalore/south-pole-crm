@@ -56,6 +56,7 @@ const ExportInvoice = () => {
   const calculateRowAmount = (item) => {
     const qty = Number(item.invoiceSub_qnty || 0);
     const dollorrate = Number(invoicePackingData?.invoice_dollar_rate || 0);
+    console.log(dollorrate, "dollorrate");
 
     const toMeter = (cm) => Number(cm || 0) / 100;
 
@@ -136,6 +137,13 @@ const ExportInvoice = () => {
   const totalAmount = invoiceSubData
     .reduce((sum, item) => sum + calculateRowAmount(item), 0)
     .toFixed(2);
+  const taxableValueUSD = invoiceSubData.reduce(
+    (sum, item) => sum + calculateRowAmount(item),
+    0,
+  );
+  const taxableValueINR =
+    taxableValueUSD * Number(invoicePackingData?.invoice_dollar_rate || 0);
+
   const invoiceColGroup = (
     <colgroup>
       <col style={{ width: "4%" }} />
@@ -570,29 +578,17 @@ const ExportInvoice = () => {
                           colSpan={2}
                         >
                           {" "}
-                          {invoiceSubData
-                            .reduce(
-                              (s, i) =>
-                                s + Number(i.invoiceSub_selling_rate || 0),
-                              0,
-                            )
-                            .toFixed(2)}
+                          {taxableValueUSD.toFixed(2)}
                         </td>
 
                         <td className="border border-black text-right px-2"></td>
                         <td className="border border-black text-right px-2"></td>
 
                         <td className="border border-black text-start px-2">
-                          {invoiceSubData
-                            .reduce(
-                              (s, i) =>
-                                s + Number(i.invoiceSub_selling_rate || 0),
-                              0,
-                            )
-                            .toFixed(2)}
+                          {taxableValueUSD.toFixed(2)}
                         </td>
 
-                        <td className="text-right px-2">$33,990.00</td>
+                        <td className="text-right px-2">${totalAmount}</td>
                       </tr>
 
                       <tr>
@@ -608,20 +604,14 @@ const ExportInvoice = () => {
                           className="border-r border-black text-start px-2"
                           colSpan={2}
                         >
-                          {(
-                            invoiceSubData?.reduce(
-                              (sum, item) =>
-                                sum + Number(item.invoiceSub_selling_rate || 0),
-                              0,
-                            ) * safe(invoicePackingData.invoice_dollar_rate)
-                          ).toFixed(2)}
+                          {taxableValueINR.toFixed(2)}
                         </td>
                         <td className="border border-black text-right px-2"></td>
                         <td className="border border-black text-right px-2"></td>
 
                         <td className="border border-black text-center">
                           {" "}
-                          ₹29,67,327.00
+                          ₹{taxableValueINR.toFixed(2)}
                         </td>
                         <td className="text-right px-2">$ 3.85</td>
                       </tr>
@@ -656,13 +646,13 @@ const ExportInvoice = () => {
                           className="border border-black text-start"
                           colSpan={2}
                         >
-                          1,48,366.35
+                          {(taxableValueINR * 0.05).toFixed(2)}
                         </td>
                         <td className="border border-black text-center"></td>
                         <td className="border border-black text-center"></td>
 
                         <td className="border border-black text-right px-2">
-                          ₹1,48,366.35
+                          ₹ {(taxableValueINR * 0.05).toFixed(2)}
                         </td>
                         <td className="text-center"></td>
                       </tr>
@@ -675,11 +665,12 @@ const ExportInvoice = () => {
                         <td colSpan={1} className="border border-black px-2">
                           USD Rate
                         </td>
-                        <td className="border border-black text-center"></td>
-
                         <td className="border border-black text-center">
+                          {" "}
                           {safe(invoicePackingData.invoice_dollar_rate)}
                         </td>
+
+                        <td className="border border-black text-center"></td>
                         <td className="border border-black text-center"></td>
 
                         <td className="border border-black text-center"></td>

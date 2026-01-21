@@ -4,7 +4,7 @@ import { INVOICE_API } from "@/constants/apiConstants";
 import { useApiMutation } from "@/hooks/useApiMutation";
 import moment from "moment";
 import { toWords } from "number-to-words";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 const ExportInvoice = () => {
   const { id } = useParams();
@@ -29,22 +29,9 @@ const ExportInvoice = () => {
   useEffect(() => {
     fetchContractData();
   }, [id]);
-  const groupedItems = invoiceSubData.reduce((acc, item) => {
-    if (!acc[item.invoiceSub_item_id]) {
-      acc[item.invoiceSub_item_id] = [];
-    }
-    acc[item.invoiceSub_item_id].push(item);
-    return acc;
-  }, {});
 
   const safe = (value) => value || "\u00A0";
 
-  const grandTotalValue = Object.values(groupedItems).reduce(
-    (sum, items) =>
-      sum +
-      items.reduce((s, it) => s + Number(it.invoiceSub_selling_rate || 0), 0),
-    0,
-  );
   const amountInWords = (amount) => {
     if (!amount) return "";
 
@@ -53,7 +40,7 @@ const ExportInvoice = () => {
 
     const formatCase = (text) =>
       text
-        .replace(/,/g, "") // remove commas
+        .replace(/,/g, "")
         .split(" ")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
@@ -66,6 +53,55 @@ const ExportInvoice = () => {
 
     return words + " Only";
   };
+  const calculateRowAmount = (item) => {
+    const qty = Number(item.invoiceSub_qnty || 0);
+    const dollorrate = Number(invoicePackingData?.invoice_dollar_rate || 0);
+
+    const toMeter = (cm) => Number(cm || 0) / 100;
+
+    const cbm =
+      toMeter(item.invoiceSub_cartonbox_l) *
+      toMeter(item.invoiceSub_cartonbox_w) *
+      toMeter(item.invoiceSub_cartonbox_h);
+
+    const Rate = cbm * qty;
+    // const totalRate = invoiceSubData
+    //   .reduce((sum, item) => {
+    //     const l_m = toMeter(item.invoiceSub_cartonbox_l);
+    //     const w_m = toMeter(item.invoiceSub_cartonbox_w);
+    //     const h_m = toMeter(item.invoiceSub_cartonbox_h);
+    //     const qty = Number(item.invoiceSub_qnty || 0);
+    //     const cbm = l_m * w_m * h_m;
+
+    //     return sum + cbm * qty;
+    //   }, 0)
+    //   .toFixed(5);
+    const totalRate = 28.71;
+    const FTD = 250000;
+    const pamountSum = 2513225;
+    const healthcr = 30000;
+    const localtransport = 25000;
+
+    const pertotalcalc = Rate / totalRate;
+    const profit = (FTD + pamountSum) * 0.05;
+    const subtotal = FTD + profit + healthcr + localtransport;
+
+    const ftdshare = pertotalcalc * subtotal;
+
+    const csrate =
+      Number(item.invoiceSub_item_pack_per_case || 0) *
+      Number(item.invoiceSub_selling_rate || 0);
+
+    const pamount = csrate * qty;
+
+    const cifinr = ftdshare + pamount;
+    const cifrate = cifinr / qty / dollorrate;
+
+    return cifrate * qty;
+  };
+  const totalAmount = invoiceSubData
+    .reduce((sum, item) => sum + calculateRowAmount(item), 0)
+    .toFixed(2);
   const invoiceColGroup = (
     <colgroup>
       <col style={{ width: "4%" }} />
@@ -459,16 +495,7 @@ const ExportInvoice = () => {
                         >
                           CIF Value Total
                         </td>
-                        <td className="text-center">
-                          ${" "}
-                          {invoiceSubData
-                            .reduce(
-                              (s, i) =>
-                                s + Number(i.invoiceSub_selling_rate || 0),
-                              0,
-                            )
-                            .toFixed(2)}
-                        </td>
+                        <td className="text-center">$ {totalAmount}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -481,7 +508,7 @@ const ExportInvoice = () => {
                           Amount (In Words)
                         </td>
                         <td colSpan={7} className="px-2">
-                          {amountInWords(grandTotalValue)}
+                          {amountInWords(totalAmount)}
                         </td>
                       </tr>
                     </tbody>

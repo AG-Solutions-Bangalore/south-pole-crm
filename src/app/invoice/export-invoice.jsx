@@ -65,20 +65,40 @@ const ExportInvoice = () => {
       toMeter(item.invoiceSub_cartonbox_h);
 
     const Rate = cbm * qty;
-    // const totalRate = invoiceSubData
-    //   .reduce((sum, item) => {
-    //     const l_m = toMeter(item.invoiceSub_cartonbox_l);
-    //     const w_m = toMeter(item.invoiceSub_cartonbox_w);
-    //     const h_m = toMeter(item.invoiceSub_cartonbox_h);
-    //     const qty = Number(item.invoiceSub_qnty || 0);
-    //     const cbm = l_m * w_m * h_m;
+    const totalRate = invoiceSubData
+      .reduce((sum, item) => {
+        const l_m = toMeter(item.invoiceSub_cartonbox_l);
+        const w_m = toMeter(item.invoiceSub_cartonbox_w);
+        const h_m = toMeter(item.invoiceSub_cartonbox_h);
+        const qty = Number(item.invoiceSub_qnty || 0);
+        const cbm = l_m * w_m * h_m;
 
-    //     return sum + cbm * qty;
+        return sum + cbm * qty;
+      }, 0)
+      .toFixed(5);
+    const csrate =
+      Number(item.invoiceSub_item_pack_per_case || 0) *
+      Number(item.invoiceSub_selling_rate || 0);
+    // const totalRate = 28.71;
+    // const pamountSum = invoiceSubData
+    //   .reduce((sum, item) => {
+    //     const csratevalue = Number(csrate || 0);
+    //     const qty = Number(item.invoiceSub_qnty || 0);
+
+    //     const pamount = csratevalue * qty;
+
+    //     return sum + pamount;
     //   }, 0)
     //   .toFixed(5);
-    const totalRate = 28.71;
+    const pamountSum = invoiceSubData.reduce((sum, item) => {
+      const csrate =
+        Number(item.invoiceSub_item_pack_per_case || 0) *
+        Number(item.invoiceSub_selling_rate || 0);
+
+      return sum + csrate * Number(item.invoiceSub_qnty || 0);
+    }, 0);
     const FTD = 250000;
-    const pamountSum = 2513225;
+    // const pamountSum = 2513225;
     const healthcr = 30000;
     const localtransport = 25000;
 
@@ -88,10 +108,6 @@ const ExportInvoice = () => {
 
     const ftdshare = pertotalcalc * subtotal;
 
-    const csrate =
-      Number(item.invoiceSub_item_pack_per_case || 0) *
-      Number(item.invoiceSub_selling_rate || 0);
-
     const pamount = csrate * qty;
 
     const cifinr = ftdshare + pamount;
@@ -99,6 +115,24 @@ const ExportInvoice = () => {
 
     return cifrate * qty;
   };
+  const totalNetWt = invoiceSubData.reduce((sum, item) => {
+    const qty = Number(item.invoiceSub_qnty || 0);
+    const net = Number(item.invoiceSub_item_net_weight || 0);
+    const packper = Number(item.invoiceSub_item_pack_per_case || 0);
+    return sum + net * packper * qty;
+  }, 0);
+
+  const totalGrossWt = invoiceSubData.reduce((sum, item) => {
+    const qty = Number(item.invoiceSub_qnty || 0);
+    const net = Number(item.invoiceSub_item_net_weight || 0);
+    const tare = Number(item.invoiceSub_item_tare_weight || 0);
+    const packper = Number(item.invoiceSub_item_pack_per_case || 0);
+
+    const rowGrossWt = (net * packper + tare) * qty;
+
+    return sum + rowGrossWt;
+  }, 0);
+
   const totalAmount = invoiceSubData
     .reduce((sum, item) => sum + calculateRowAmount(item), 0)
     .toFixed(2);
@@ -340,34 +374,34 @@ const ExportInvoice = () => {
                         const Rate =
                           Number(invoiceSub_cartonbox_cbm || 0) *
                           Number(qty || 0);
-                        // const totalRate = invoiceSubData
-                        //   .reduce((sum, item) => {
-                        //     const l_m = toMeter(item.invoiceSub_cartonbox_l);
-                        //     const w_m = toMeter(item.invoiceSub_cartonbox_w);
-                        //     const h_m = toMeter(item.invoiceSub_cartonbox_h);
-                        // const qty = Number(item.invoiceSub_qnty || 0);
-                        //     const cbm = l_m * w_m * h_m;
+                        const totalRate = invoiceSubData
+                          .reduce((sum, item) => {
+                            const l_m = toMeter(item.invoiceSub_cartonbox_l);
+                            const w_m = toMeter(item.invoiceSub_cartonbox_w);
+                            const h_m = toMeter(item.invoiceSub_cartonbox_h);
+                            const qty = Number(item.invoiceSub_qnty || 0);
+                            const cbm = l_m * w_m * h_m;
 
-                        //     return sum + cbm * qty;
-                        //   }, 0)
-                        //   .toFixed(5);
-                        const totalRate = 28.71;
+                            return sum + cbm * qty;
+                          }, 0)
+                          .toFixed(5);
+                        // const totalRate = 28.71;
                         const FTD = 250000;
                         const csrate =
                           Number(item.invoiceSub_item_pack_per_case || 0) *
                           Number(item.invoiceSub_selling_rate || 0);
                         const pamount = csrate * qty;
-                        // const pamountSum = invoiceSubData
-                        //   .reduce((sum, item) => {
-                        //     const csratevalue = Number(csrate || 0);
-                        //     const qty = Number(item.invoiceSub_qnty || 0);
+                        const pamountSum = invoiceSubData
+                          .reduce((sum, item) => {
+                            const csratevalue = Number(csrate || 0);
+                            const qty = Number(item.invoiceSub_qnty || 0);
 
-                        //     const pamount = csratevalue * qty;
+                            const pamount = csratevalue * qty;
 
-                        //     return sum + pamount;
-                        //   }, 0)
-                        //   .toFixed(5);
-                        const pamountSum = 2513225;
+                            return sum + pamount;
+                          }, 0)
+                          .toFixed(5);
+                        // const pamountSum = 2513225;
                         const pertotal = ((Rate / totalRate) * 100).toFixed(2); //for view
                         const pertotalcalc = Rate / totalRate;
                         const profit =
@@ -455,27 +489,11 @@ const ExportInvoice = () => {
                         </td>
 
                         <td className="border-r border-black text-center">
-                          {invoiceSubData
-                            .reduce(
-                              (s, i) =>
-                                s + Number(i.invoiceSub_item_net_weight || 0),
-                              0,
-                            )
-                            .toFixed(2)}
+                          {totalNetWt}
                         </td>
 
                         <td className="border-r border-black text-center">
-                          {invoiceSubData
-                            .reduce((s, i) => {
-                              const q = Number(i.invoiceSub_qnty || 0);
-                              const n =
-                                q * Number(i.invoiceSub_item_net_weight || 0);
-                              const g =
-                                n +
-                                q * Number(i.invoiceSub_item_tare_weight || 0);
-                              return s + g;
-                            }, 0)
-                            .toFixed(2)}
+                          {totalGrossWt}
                         </td>
 
                         <td className="border-r border-black"></td>
